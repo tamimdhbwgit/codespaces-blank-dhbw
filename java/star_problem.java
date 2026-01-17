@@ -7,6 +7,7 @@ public class star_problem{
             }
             System.out.println(" ");
         }
+        System.out.println("............... ");
         //to make a decreasing 
         for (int i = 1; i<6; i++){
             for (int j = i; j<6; j++){
