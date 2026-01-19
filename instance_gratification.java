@@ -4,10 +4,10 @@
  * When an instance of this class is created it "gratifies" by printing
  * a greeting to stdout.
  */
-public class InstanceGratification {
+public class instance_gratification {
 
     // Constructor prints the greeting when a new instance is created
-    public InstanceGratification() {
+    public instance_gratification() {
         System.out.println("Hello everyone!");
     }
 
@@ -20,7 +20,7 @@ public class InstanceGratification {
     // and call the instance method.
     public static void main(String[] args) {
         // Creating an instance — the constructor prints "Hello everyone!"
-        InstanceGratification ig = new InstanceGratification();
+        instance_gratification ig = new instance_gratification();
 
         // Calling an instance method that prints the same greeting again
         ig.greet();

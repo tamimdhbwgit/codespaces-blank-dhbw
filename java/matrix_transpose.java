@@ -15,7 +15,7 @@ public class matrix_transpose {
             }
         }
         
-        System.out.println("Transpose of matrices:");
+        System.out.println("Transpose of matrices and testing:");
         for (int i = 0; i < T.length; i++) {
             for (int j = 0; j < T[0].length; j++) {
                 System.out.print(T[i][j] + " ");
