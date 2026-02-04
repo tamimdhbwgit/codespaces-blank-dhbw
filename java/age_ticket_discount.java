@@ -1,6 +1,5 @@
 class age_ticket_discount {
     public static void main(String[] args) {
-        System.out.println("Try programiz.pro");
         int age = 33;
         boolean isStudent = true;
         boolean isSenior = age >= 50;
@@ -16,7 +15,7 @@ class age_ticket_discount {
                 price = price * (1 - percentageStudent);
             }
         } else {
-            price = price;
+            price = price; // no discount
         }
 
         System.out.println("Ticket price: " + price);
