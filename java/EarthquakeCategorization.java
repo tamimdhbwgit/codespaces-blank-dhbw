@@ -2,10 +2,10 @@ import java.util.Scanner;
 
 public class EarthquakeCategorization {
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
+        Scanner scan = new Scanner(System.in);
 
         System.out.print("Enter earthquake magnitude: ");
-        double mag = in.nextDouble();
+        double mag = scan.nextDouble();
 
         // Bucket: 0 for <2, 2 for [2,4), 4 for [4,5), 5 for [5,6), 6 for [6,7), 7 for [7,8), 8 for >=8
         int bucket;
@@ -28,6 +28,7 @@ public class EarthquakeCategorization {
             case 7  -> description = "Major: 7.0 ≤ Magnitude < 8.0 (Severe damage over large areas)";
             default -> description = "Great: Magnitude ≥ 8.0 (Massive destruction)";
         }
+        scan.close();
 
         System.out.println(description);
     }

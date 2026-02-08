@@ -29,7 +29,7 @@ public class TimetableGradeApp {
             }
 
             System.out.println();
-        } while (choice != 4);
+        } while (choice != 5);
 
         scanner.close();
     }
