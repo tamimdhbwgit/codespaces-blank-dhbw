@@ -67,4 +67,5 @@ public class fibonacci{
         long usedMB = (after - before) / (1024 * 1024);
         System.out.println("Memory used: " + usedMB + "MB");
     }
+    
 }
