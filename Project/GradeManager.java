@@ -128,48 +128,15 @@ public class GradeManager {
             return; // check for subjects...
 
         System.out.println("+------------------+-----------------------------+---------+----------------+");
-        System.out.printf("| %-16s | %-27s | %-7s | %-14s |%n", "Subject", "Grades", "Average", "Label"); // %n is a
-                                                                                                          // platform
-                                                                                                          // independent
-                                                                                                          // line
-                                                                                                          // separator
+        System.out.printf("| %-16s | %-27s | %-7s | %-14s |%n", "Subject", "Grades", "Average", "Label");
         System.out.println("+------------------+-----------------------------+---------+----------------+");
 
         for (int i = 0; i < subjectCount; i++) {
-            int exams = examCountPerSubject[i];
-
-            StringBuilder gradeStr = new StringBuilder(); // stringbuilder is used because it mutates in place, which is
-                                                          // more efficient while creating string in a loop
-                                                          // (geeksforgeeks)
-            double sum = 0;
-            for (int j = 0; j < exams; j++) {
-                if (j > 0)
-                    gradeStr.append(", ");
-                gradeStr.append(String.format("%.1f", grades[i][j])); // keep only one decimal place value of grades
-                                                                      // (2.446 becaomes 2.4)
-                sum += grades[i][j];
-            }
-
-            String avgStr;
-            String label;
-            if (exams == 0) {
-                gradeStr.append("no grades yet");
-                avgStr = "  N/A";
-                label = "--";
-            } else {
-                double avg = sum / exams;
-                avgStr = String.format("%6.1f", avg); // to ensure 3 spaces before the grade- allignemnt purpose
-                label = getGradeLabel(avg);
-            }
-
-            String gStr = gradeStr.toString(); // converts the stringbuilder into a regular string
-            if (gStr.length() > 27) {
-                gStr = gStr.substring(0, 24) + "...";
-            }
+            double[] avgOut = new double[1];
+            String[] row = buildSubjectRow(i, avgOut);
 
             System.out.printf("| %-16s | %-27s | %7s | %-14s |%n",
-                    subjectNames[i].length() > 16 ? subjectNames[i].substring(0, 13) + "..." : subjectNames[i],
-                    gStr, avgStr, label);
+                    row[0], row[1], row[2], row[3]);
         }
         System.out.println("+------------------+-----------------------------+---------+----------------+");
     }
@@ -180,53 +147,31 @@ public class GradeManager {
 
         System.out.println("+------------------+-----------------------------+---------+----------------+--------+");
         System.out.printf("| %-16s | %-27s | %-7s | %-14s | %-6s |%n", "Subject", "Grades", "Average", "Label",
-                "Status"); // %n is a platform independent line separator
+                "Status");
         System.out.println("+------------------+-----------------------------+---------+----------------+--------+");
 
         double overallSum = 0;
         int gradedSubjectCount = 0;
 
         for (int i = 0; i < subjectCount; i++) {
-            int exams = examCountPerSubject[i];
+            double[] avgOut = new double[1];
+            String[] row = buildSubjectRow(i, avgOut);
 
-            StringBuilder gradeStr = new StringBuilder();
-            double sum = 0;
-            for (int j = 0; j < exams; j++) {
-                if (j > 0)
-                    gradeStr.append(", ");
-                gradeStr.append(String.format("%.1f", grades[i][j]));
-                sum += grades[i][j];
-            }
-
-            String avgStr;
-            String label;
             String status;
-            if (exams == 0) {
-                gradeStr.append("no grades yet");
-                avgStr = "  N/A";
-                label = "--";
+            if (examCountPerSubject[i] == 0) {
                 status = "  --";
             } else {
-                double avg = sum / exams;
-                avgStr = String.format("%6.1f", avg); // to ensure 3 spaces before the average
-                label = getGradeLabel(avg);
-                status = (avg <= PASS_THRESHOLD) ? " PASS" : " FAIL";
-                overallSum += avg;
+                status = (avgOut[0] <= PASS_THRESHOLD) ? " PASS" : " FAIL";
+                overallSum += avgOut[0];
                 gradedSubjectCount++;
             }
 
-            String gStr = gradeStr.toString(); // converts the stringbuilder into a regular string
-            if (gStr.length() > 27) {
-                gStr = gStr.substring(0, 24) + "...";
-            }
-
             System.out.printf("| %-16s | %-27s | %7s | %-14s | %-6s |%n",
-                    subjectNames[i].length() > 16 ? subjectNames[i].substring(0, 13) + "..." : subjectNames[i],
-                    gStr, avgStr, label, status);
+                    row[0], row[1], row[2], row[3], status);
         }
         System.out.println("+------------------+-----------------------------+---------+----------------+--------+");
 
-        // Overall CGPA
+        // Overall CGPA calculation
         if (gradedSubjectCount > 0) {
             double overallCgpa = overallSum / gradedSubjectCount;
             String overallLabel = getGradeLabel(overallCgpa);
@@ -239,11 +184,11 @@ public class GradeManager {
         System.out.println("(Pass threshold: <= " + PASS_THRESHOLD + ")");
     }
 
-    /************************************************************
+    /*
      * Returns the German grade label for a given grade average.
      * 1.0-1.5: Very Good | 1.6-2.5: Good | 2.6-3.5: Satisfactory
      * 3.6-4.0: Sufficient | 4.1-5.0: Fail
-     ************************************************************/
+     */
     private String getGradeLabel(double average) {
         if (average <= 1.5)
             return "Very Good";
@@ -256,7 +201,56 @@ public class GradeManager {
         return "Fail";
     }
 
-    // helper method for printGrades() and printReportwithPassFail()
+    /**
+     * Builds a formatted row of data for a single subject.
+     * Returns a String[] with: [shorterSubjectName, shorterGradeStr, avgStr,
+     * label].
+     * The computed average is stored in array avgOut[0] (set to 0.0 when there are
+     * no
+     * exams).
+     */
+    private String[] buildSubjectRow(int subjectIndex, double[] avgOut) {
+        int exams = examCountPerSubject[subjectIndex];
+
+        StringBuilder gradeStr = new StringBuilder();
+        double sum = 0;
+        for (int j = 0; j < exams; j++) {
+            if (j > 0)
+                gradeStr.append(", ");
+            gradeStr.append(String.format("%.1f", grades[subjectIndex][j]));
+            sum += grades[subjectIndex][j];
+        }
+
+        String avgStr;
+        String label;
+        if (exams == 0) {
+            gradeStr.append("no grades yet");
+            avgStr = "  N/A";
+            label = "--";
+            avgOut[0] = 0.0;
+        } else {
+            double avg = sum / exams;
+            avgStr = String.format("%6.1f", avg);
+            label = getGradeLabel(avg);
+            avgOut[0] = avg;
+        }
+
+        String gStr = gradeStr.toString();
+        if (gStr.length() > 27) {
+            gStr = gStr.substring(0, 24) + "...";
+        }
+
+        String subjectDisplay = subjectNames[subjectIndex].length() > 16
+                ? subjectNames[subjectIndex].substring(0, 13) + "..."
+                : subjectNames[subjectIndex];
+
+        return new String[] { subjectDisplay, gStr, avgStr, label };
+    }
+
+    /*
+     * helper method for printGrades() and printReportwithPassFail()
+     * checks if there are any subjects to show
+     */
     private boolean hasSubjects() {
         if (subjectCount == 0) {
             System.out.println("No subjects to show.");

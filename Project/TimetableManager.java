@@ -87,30 +87,33 @@ public class TimetableManager {
     }
 
     private void setTimetableSlot(Scanner scanner) {
-        System.out.println("Select day:");
-        for (int i = 0; i < DAYS; i++) {
-            String dayName = (i < DAY_NAMES.length) ? DAY_NAMES[i] : "Day " + i; // ternary operator (W3schoools)
-            System.out.println("  " + i + ": " + dayName);
-        }
-        System.out.print("Enter day (0 to " + (DAYS - 1) + "): ");
-        int day = scanner.nextInt();
-        System.out.print("Enter slot (1 to " + SLOTS + "): ");
-        int slot = scanner.nextInt() - 1;
-        scanner.nextLine();
-
-        if (day < 0 || day >= DAYS || slot < 0 || slot >= SLOTS) {
-            System.out.println("Invalid day or slot index.");
+        int[] selection = selectDayAndSlot(scanner);
+        if (selection == null)
             return;
-        }
 
         System.out.print("Enter subject name: ");
         String subject = scanner.nextLine();
-        timetable[day][slot] = subject;
+        timetable[selection[0]][selection[1]] = subject;
         saveTimetable();
         System.out.println("Slot updated and saved.");
     }
 
     private void clearTimetableSlot(Scanner scanner) {
+        int[] selection = selectDayAndSlot(scanner);
+        if (selection == null)
+            return;
+
+        timetable[selection[0]][selection[1]] = null;
+        saveTimetable();
+        System.out.println("Slot cleared and saved.");
+    }
+
+    /*
+     * Lists available days, reads day and slot input from the scanner,
+     * and validates the selection.
+     * Returns int[] {day, slot} on success, or null if the input is invalid.
+     */
+    private int[] selectDayAndSlot(Scanner scanner) {
         System.out.println("Select day:");
         for (int i = 0; i < DAYS; i++) {
             String dayName = (i < DAY_NAMES.length) ? DAY_NAMES[i] : "Day " + i;
@@ -124,15 +127,16 @@ public class TimetableManager {
 
         if (day < 0 || day >= DAYS || slot < 0 || slot >= SLOTS) {
             System.out.println("Invalid day or slot index.");
-            return;
+            return null;
         }
-
-        timetable[day][slot] = null;
-        saveTimetable();
-        System.out.println("Slot cleared and saved.");
+        return new int[] { day, slot };
     }
 
-    public String[][] getTimetable() {
-        return timetable;
-    }
+    /*
+     * Returns the timetable array--> not used in the program, but for future
+     * encapsulation it might needed.
+     */
+    // public String[][] getTimetable() {
+    // return timetable;
+    // }
 }
