@@ -185,20 +185,15 @@ public class GradeManager {
     }
 
     /*
-     * Returns the German grade label for a given grade average.
-     * 1.0-1.5: Very Good | 1.6-2.5: Good | 2.6-3.5: Satisfactory
-     * 3.6-4.0: Sufficient | 4.1-5.0: Fail
+     * helper method for printGrades() and printReportwithPassFail()
+     * checks if there are any subjects to show
      */
-    private String getGradeLabel(double average) {
-        if (average <= 1.5)
-            return "Very Good";
-        if (average <= 2.5)
-            return "Good";
-        if (average <= 3.5)
-            return "Satisfactory";
-        if (average <= 4.0)
-            return "Sufficient";
-        return "Fail";
+    private boolean hasSubjects() {
+        if (subjectCount == 0) {
+            System.out.println("No subjects to show.");
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -248,15 +243,20 @@ public class GradeManager {
     }
 
     /*
-     * helper method for printGrades() and printReportwithPassFail()
-     * checks if there are any subjects to show
+     * Returns the German grade label for a given grade average.
+     * 1.0-1.5: Very Good | 1.6-2.5: Good | 2.6-3.5: Satisfactory
+     * 3.6-4.0: Sufficient | 4.1-5.0: Fail
      */
-    private boolean hasSubjects() {
-        if (subjectCount == 0) {
-            System.out.println("No subjects to show.");
-            return false;
-        }
-        return true;
+    private String getGradeLabel(double average) {
+        if (average <= 1.5)
+            return "Very Good";
+        if (average <= 2.5)
+            return "Good";
+        if (average <= 3.5)
+            return "Satisfactory";
+        if (average <= 4.0)
+            return "Sufficient";
+        return "Fail";
     }
 }
 /*

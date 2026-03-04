@@ -14,7 +14,7 @@ public class TimetableGradeApp {
         TimetableManager timetableManager = new TimetableManager(DAYS, SLOTS);
         GradeManager gradeManager = new GradeManager(MAX_SUBJECTS, MAX_EXAMS, PASS_THRESHOLD);
 
-        // Load saved data from JSON files - (AI generated)
+        // Load saved data from JSON files 
         timetableManager.loadTimetable();
         gradeManager.loadGrades();
 

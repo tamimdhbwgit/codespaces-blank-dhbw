@@ -13,7 +13,7 @@ public class TimetableManager {
         this.timetable = new String[DAYS][SLOTS];
     }
 
-    // Load timetable data from JSON file (called once at startup) - (AI generated)
+    // Load timetable data from JSON file (called once at startup) 
     public void loadTimetable() {
         String[][] loaded = JsonHelper.loadTimetable(DAYS, SLOTS);
         if (loaded != null) {
